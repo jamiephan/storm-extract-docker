@@ -16,7 +16,6 @@ Get the image from Dockerhub
 
 1. Pull the image from Dockerhub
 
-> Note: Not exist yet, so please build the image yourself by now.
 ```bash
 docker pull jamiephan/storm-extract-docker
 ```
