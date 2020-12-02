@@ -32,6 +32,4 @@ RUN DEBIAN_FRONTEND=noninteractive apt update && \
     DEBIAN_FRONTEND=noninteractive apt clean -y && \
     rm -rf /var/lib/apt/lists/*
 
-# VOLUME [ "/input", "/output" ]
-
 ENTRYPOINT [ "storm-extract", "-i", "/input", "-o", "/output", "-x" ]
