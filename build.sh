@@ -1,0 +1,1 @@
+docker build . -t storm-extract-docker
