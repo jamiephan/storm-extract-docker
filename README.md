@@ -85,6 +85,7 @@ Edit and append the following line in `~/.bashrc`:
 ```bash
 alias storm-extract='docker run --mount type=bind,source="/path/to/install",target=/input --mount type=bind,source="/path/to/output",target=/output -it --init storm-extract-docker'
 ```
+>Note: Remember to change `/path/to/install` and `/path/to/output`.
 
 Restart the Shell session.
 
@@ -96,5 +97,7 @@ Create a `storm-extract.bat` file with the following content and place the file 
 @echo off
 docker run --mount type=bind,source="/path/to/install",target=/input --mount type=bind,source="/path/to/output",target=/output -it --init storm-extract-docker %*
 ```
-Close all terminal applications, e.g `cmd.exe`
+>Note: Remember to change `/path/to/install` and `/path/to/output`.
+
+Restart all terminal applications, e.g `cmd.exe`
 
