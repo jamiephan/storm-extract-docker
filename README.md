@@ -63,7 +63,7 @@ You can append any command line options from [storm-extract](https://github.com/
 - `-o`, `--out`
 - `-i`, `--in`
 
-For example to also print verbosely and search for *.xml files, you can do: 
+For example to also print verbosely and search for *.xml files, you can do:
 
 ```bash
 docker run \
