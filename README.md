@@ -1,6 +1,10 @@
 # A Dockerised storm-extract
 
-[storm-extract](https://github.com/nydus/storm-extract) is a command line tool to extract Heroes Of The Storm game files. This repo aims to containerise the process of the image to have storm-extract running.
+[storm-extract](https://github.com/nydus/storm-extract) is a command line tool to extract Heroes Of The Storm game files.
+
+This project aims to create a prebuilt docker image with the necessary binary installed. This can remove the hassle to build `storm-extract` manually (and also cross platform!) 
+
+The final built image is ~1.52MB download and ~3.43 MB when extracted. It also does not contain any OS component so running this image is very fast and close to native speed.
 
 # Prerequisite
 
@@ -8,68 +12,64 @@ Having Docker installed and running on the your system.
 
 > [Install Docker](https://www.docker.com/) if you not have done so.
 
-# Get the image
-
-You can either build the image yourself of from a pre-built image from Dockerhub.
-
-Get the image from Dockerhub
-
-1. Pull the image from Dockerhub
-
-```bash
-docker pull jamiephan/storm-extract-docker
-```
-
-Or to build the image your own:
-
-1. Clone this repo
-
-```bash
-git clone https://github.com/jamiephan/storm-extract-docker.git
-```
-
-2. Build the image
-
-```bash
-docker build storm-extract-docker -t storm-extract-docker
-```
-
 # Usage
+
+To run the command:
 
 ```bash
 docker run \
-   --mount type=bind,source="path/to/install",target=/input \
-   --mount type=bind,source="path/to/output",target=/output \
-   -it --init \ 
-   storm-extract-docker
+   -it --init \
+   -v "path/to/install:/input" \
+   -v "path/to/output:/output" \
+   jamiephan/storm-extract-docker
 ```
 
-#### Whereas:
+The image will look for two paths:
 
-- `path/to/install` is the installation path of Heroes Of the Storm.
+ - `/input`: The installation of Heroes of the Storm
+ - `/output`: The output files for extraction
 
-- `path/to/output` is the location where the extract files will go.
+ You can mount the volume to your local disk by using `-v` switch.
 
-- `-it --init` is a workaround for Ctrl+C interrupt. Since there are some weird stuff will happen in PID 1 for containers. If you do not need Ctrl+C interrupt, this line is not needed but you will lose the ability to stop the command with Ctrl+C. (You can still manually stop the container with `docker stop`.)
+ For example:
 
-- `storm-extract-docker` is the tag name for the image. If you build the image yourself, it is the name after `-t` but if you pulled from DockerHub shown above, it should be `jamiephan/storm-extract-docker` instead.
+ - Heroes of the Storm install location: `/mnt/c/Program Files/Heroes of the Storm`
+ - Extraction output: `/mnt/d/HeroesFiles`
 
-#### `storm-extract` command-line options
+ The command will be:
 
-You can append any command line options from [storm-extract](https://github.com/nydus/storm-extract) **except**(!) for the followings:
+```bash
+docker run \
+   -it --init \
+   -v "/mnt/c/Program Files/Heroes of the Storm:/input" \
+   -v "/mnt/d/HeroesFiles:/output" \
+   jamiephan/storm-extract-docker
+```
+
+> Note: `-it --init` is a workaround for Ctrl+C interrupt. Since there are some weird stuff will happen in PID 1 for containers. If you do not need Ctrl+C interrupt, this line is not needed but you will lose the ability to stop the command with Ctrl+C. (You can still manually stop the container with `docker stop`.)
+
+
+## The `storm-extract` command-line options
+
+You can append any command line options from [storm-extract](https://github.com/nydus/storm-extract). However, **DO NOT**(!) add the following switches:
 
 - `-x`, `--extract`
 - `-o`, `--out`
 - `-i`, `--in`
 
+> WARN: The Image does not check whether you have passed in these command line switch. If you done so, weird stuff might happen.
+
+> //TODO Add an entrypoint script to check the passed in params.
+
+
 For example to also print verbosely and search for *.xml files, you can do:
 
 ```bash
 docker run \
-   --mount type=bind,source="path/to/install",target=/input \
-   --mount type=bind,source="path/to/output",target=/output \
-   -it --init \ 
-   storm-extract-docker --verbose --filetype xml
+   -it --init \
+   -v "path/to/install:/input" \
+   -v "path/to/output:/output" \
+   jamiephan/storm-extract-docker --verbose --filetype xml
 ```
 
 # Tips
@@ -82,7 +82,7 @@ This allows a simple `storm-extract` command to replace the gigantic docker run 
 Edit and append the following line in `~/.bashrc`:
 
 ```bash
-alias storm-extract='docker run --mount type=bind,source="/path/to/install",target=/input --mount type=bind,source="/path/to/output",target=/output -it --init storm-extract-docker'
+alias storm-extract='docker run -it --init -v "/path/to/install:/input" -v "/path/to/output:/output" jamiephan/storm-extract-docker'
 ```
 >Note: Remember to change `/path/to/install` and `/path/to/output`.
 
@@ -94,7 +94,7 @@ Create a `storm-extract.bat` file with the following content and place the file 
 
 ```bat
 @echo off
-docker run --mount type=bind,source="/path/to/install",target=/input --mount type=bind,source="/path/to/output",target=/output -it --init storm-extract-docker %*
+docker run -it --init -v "/path/to/install:/input" -v "/path/to/output:/output" jamiephan/storm-extract-docker %*
 ```
 >Note: Remember to change `/path/to/install` and `/path/to/output`.
 
