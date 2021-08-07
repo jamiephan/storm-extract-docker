@@ -1,1 +1,2 @@
-docker build . -t storm-extract-docker
+docker build . -t jamiephan/storm-extract-docker
+docker push jamiephan/storm-extract-docker
