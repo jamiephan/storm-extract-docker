@@ -11,7 +11,7 @@ RUN apk update && \
     cmake .. && \
     make
 
-FROM alpine
+FROM scratch
 COPY --from=base /storm-extract/build/bin/storm-extract /usr/bin/storm-extract
 COPY --from=base /storm-extract/build/bin/libcasc.so.1 /usr/lib/libcasc.so.1
 COPY --from=base /lib/ld-musl-x86_64.so.1 /lib/ld-musl-x86_64.so.1
