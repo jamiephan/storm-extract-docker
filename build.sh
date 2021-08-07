@@ -1,1 +1,3 @@
-docker build . -t storm-extract-docker
+#!/bin/sh
+docker build . -t jamiephan/storm-extract-docker
+docker push jamiephan/storm-extract-docker
