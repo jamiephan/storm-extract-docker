@@ -1,3 +1,9 @@
+# Depercate in flavor of native binding for CascLib.
+
+https://github.com/jamiephan/casclib-stormlib-monorepo
+
+---
+
 # A Dockerised storm-extract
 
 [storm-extract](https://github.com/nydus/storm-extract) is a command line tool to extract Heroes Of The Storm game files.
